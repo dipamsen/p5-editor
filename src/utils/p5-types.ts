@@ -1,0 +1,5 @@
+const typeDef = `
+
+namespace global
+
+`
