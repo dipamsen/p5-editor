@@ -1,5 +1,0 @@
-const typeDef = `
-
-namespace global
-
-`

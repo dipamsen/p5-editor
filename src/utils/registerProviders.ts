@@ -3,6 +3,7 @@ import * as monaco from "monaco-editor";
 import HTMLClosingTagProvider from "../providers/HTMLClosingTagProvider";
 import JSColorProvider from "../providers/JSColorProvider";
 import JSSnippetsProvider from "../providers/JSSnippetsProvider";
+import p5SnippetsProvider from "../providers/P5SnippetsProvider";
 const p5TypeDefs = import.meta.glob("/node_modules/@types/p5/**/*.d.ts", {
   as: "raw",
   eager: true,
@@ -27,6 +28,12 @@ export default function registerProviders() {
 
   // Color Provider in JavaScript
   monaco.languages.registerColorProvider("javascript", new JSColorProvider());
+
+  // Snippets for p5 events
+  monaco.languages.registerCompletionItemProvider(
+    "javascript",
+    new p5SnippetsProvider()
+  );
 
   monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
     noSemanticValidation: false,
@@ -71,21 +78,6 @@ export default function registerProviders() {
   //   GlobalDef,
   //   g.toString()
   // );
-
-  // @ts-ignore
-  window.typings = {
-    add(uri: string, name: string) {
-      fetch(uri)
-        .then((r) => r.text())
-        .then((lib) => {
-          const u = monaco.Uri.file(`${name}.d.ts`);
-          monaco.languages.typescript.javascriptDefaults.addExtraLib(
-            lib,
-            u.toString()
-          );
-        });
-    },
-  };
 
   // // ESLint Code Action
   // editor.addAction({

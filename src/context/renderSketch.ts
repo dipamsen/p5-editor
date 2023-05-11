@@ -58,10 +58,6 @@ export const renderSketch = action<GlobalContext, Editor>((state, editor) => {
   // Final Processed HTML
   const htmlToRender = `<!DOCTYPE HTML>\n${doc.documentElement.outerHTML}`;
 
-  // // Set IFrame to HTML
-  // if (this.isPlaying) {
-  //   // ! Clear Console
-  // }
   if (!state.iframe) return;
   state.iframe.srcdoc = htmlToRender;
   state.consoleLogs.length = 0;
