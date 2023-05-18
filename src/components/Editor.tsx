@@ -1,11 +1,10 @@
 import { useEffect, useRef } from "react";
 import styles from "./Editor.module.css";
 import * as monaco from "monaco-editor";
-import File from "../utils/FileManager";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { GlobalContext } from "../context/GlobalContext";
 
-export const Editor = ({ files }: { files: File[] }) => {
+export const Editor = () => {
   const editor = useStoreState<
     GlobalContext,
     monaco.editor.IStandaloneCodeEditor | null

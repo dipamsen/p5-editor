@@ -8,7 +8,7 @@ export default class JSColorProvider
     /(?<=(?:background|fill|stroke|color)\s*\()\s*(?:(?:[0-9]*[.]?[0-9]+)+[,\s]*)+(?=\))/gm;
 
   provideColorPresentations(
-    model: monaco.editor.ITextModel,
+    _model: monaco.editor.ITextModel,
     colorInfo: monaco.languages.IColorInformation
   ) {
     const color = colorInfo.color;
@@ -31,10 +31,8 @@ export default class JSColorProvider
     }
   }
 
-  provideDocumentColors(
-    model: monaco.editor.ITextModel,
-    token: monaco.CancellationToken
-  ) {
+  // TODO: check use for cancellation token
+  provideDocumentColors(model: monaco.editor.ITextModel) {
     const matches = model.findMatches(
       this.regex as unknown as string,
       false,

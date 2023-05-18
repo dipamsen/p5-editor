@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./Preview.module.css";
 import { useStoreActions } from "easy-peasy";
 import { GlobalContext } from "../context/GlobalContext";

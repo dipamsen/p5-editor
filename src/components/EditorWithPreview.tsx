@@ -1,8 +1,7 @@
 import { Editor } from "./Editor";
 import Preview from "./Preview";
 import styles from "./EditorWithPreview.module.css";
-import * as monaco from "monaco-editor";
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps, useEffect, useRef, useState } from "react";
 import File from "../utils/FileManager";
 import { State, useStoreState } from "easy-peasy";
 import { GlobalContext } from "../context/GlobalContext";
@@ -17,6 +16,11 @@ export default function EditorWithPreview() {
   const logs = useStoreState(
     (state: State<GlobalContext>) => state.consoleLogs
   );
+  const objDiv = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (objDiv.current) objDiv.current.scrollTop = objDiv.current?.scrollHeight;
+  }, [logs]);
 
   useEffect(() => {
     setSelectedFile(files[0]);
@@ -49,10 +53,10 @@ export default function EditorWithPreview() {
             </div>
           ))}
         </div>
-        <Editor files={files} />
+        <Editor />
         <div className={styles.consoleContainer}>
           <p className={styles.consoleHeader}>Console</p>
-          <div className={styles.scrollable}>
+          <div className={styles.scrollable} ref={objDiv}>
             <Console
               variant="dark"
               logs={logs}

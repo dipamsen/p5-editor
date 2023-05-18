@@ -1,4 +1,3 @@
-import React from "react";
 import "./Header.module.css";
 import logo from "../assets/p5-monaco.png";
 import styles from "./Header.module.css";

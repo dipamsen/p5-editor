@@ -1,21 +1,13 @@
-import { createStore, action, type Action, Thunk, thunk } from "easy-peasy";
+import { createStore, action, type Action, Thunk } from "easy-peasy";
 import File from "../utils/FileManager";
-import { consoleErrorScript, defaultFiles } from "../utils/defaultFiles";
 import * as monaco from "monaco-editor";
-import {
-  resolveLinksJS,
-  resolveLinksCSS,
-  resolveScripts,
-  resolveStyles,
-  resolveFileFromPath,
-} from "../utils/CodeAnalysis";
-import { MEDIA_FILE_REGEX } from "../utils/FileUtils";
 import { initialiseEditor } from "./initialiseEditor";
 import { createEditor } from "./createEditor";
 import { createEditorActions } from "./createEditorActions";
 import { renderSketch } from "./renderSketch";
 import { Log } from "../components/EditorWithPreview";
 import { createConsoleLog } from "./createConsoleLog";
+import { hookConsole } from "./hookConsole";
 
 export type Editor = monaco.editor.IStandaloneCodeEditor;
 export interface GlobalContext {
@@ -29,6 +21,7 @@ export interface GlobalContext {
   createEditorActions: Thunk<GlobalContext, Editor>;
   consoleLogs: Log[];
   createConsoleLog: Action<GlobalContext, Log>;
+  hookConsole: Thunk<GlobalContext, HTMLIFrameElement>;
 }
 
 export interface PartialFile {
@@ -51,4 +44,5 @@ export const globalContext = createStore<GlobalContext>({
   renderSketch,
   consoleLogs: [],
   createConsoleLog,
+  hookConsole,
 });

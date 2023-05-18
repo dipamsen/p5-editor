@@ -1,3 +1,8 @@
+// https://github.com/processing/p5.js-web-editor/blob/develop/client/modules/Preview/EmbedFrame.jsx
+
+// Console hook code:
+// https://github.com/processing/p5.js-web-editor/blob/develop/client/utils/previewEntry.js
+
 import { action } from "easy-peasy";
 import {
   resolveLinksJS,
@@ -10,7 +15,7 @@ import { MEDIA_FILE_REGEX } from "../utils/FileUtils";
 import { consoleErrorScript } from "../utils/defaultFiles";
 import { Editor, GlobalContext, PartialFile } from "./GlobalContext";
 
-export const renderSketch = action<GlobalContext, Editor>((state, editor) => {
+export const renderSketch = action<GlobalContext, Editor>((state) => {
   const htmlFile = state.files.find((file) =>
     file.name?.match(/.*\.html$/)
   )?.content;
