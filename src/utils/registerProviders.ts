@@ -4,6 +4,9 @@ import HTMLClosingTagProvider from "../providers/HTMLClosingTagProvider";
 import JSColorProvider from "../providers/JSColorProvider";
 import JSSnippetsProvider from "../providers/JSSnippetsProvider";
 import p5SnippetsProvider from "../providers/P5SnippetsProvider";
+import Prettier from "prettier";
+import Babel from "prettier/parser-babel";
+
 const p5TypeDefs = import.meta.glob("/node_modules/@types/p5/**/*.d.ts", {
   as: "raw",
   eager: true,
@@ -105,22 +108,22 @@ export default function registerProviders() {
   // });
 
   // // Prettier Code Formatter
-  // monaco.languages.registerDocumentFormattingEditProvider("javascript", {
-  //   provideDocumentFormattingEdits(model, options, token) {
-  //     console.log("Formatting");
-  //     const code = model.getValue();
-  //     const result = Prettier.format(code, {
-  //       parser: "babel",
-  //       plugins: [Babel],
-  //     });
+  monaco.languages.registerDocumentFormattingEditProvider("javascript", {
+    provideDocumentFormattingEdits(model, options, token) {
+      console.log("Formatting");
+      const code = model.getValue();
+      const result = Prettier.format(code, {
+        parser: "babel",
+        plugins: [Babel],
+      });
 
-  //     return [
-  //       {
-  //         range: model.getFullModelRange(),
-  //         text: result,
-  //       },
-  //     ];
-  //   },
-  //   displayName: `Prettier ${Prettier.version}`,
-  // });
+      return [
+        {
+          range: model.getFullModelRange(),
+          text: result,
+        },
+      ];
+    },
+    displayName: `Prettier ${Prettier.version}`,
+  });
 }

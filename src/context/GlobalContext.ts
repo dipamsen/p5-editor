@@ -8,6 +8,7 @@ import { renderSketch } from "./renderSketch";
 import { Log } from "../components/EditorWithPreview";
 import { createConsoleLog } from "./createConsoleLog";
 import { hookConsole } from "./hookConsole";
+import { stopSketch } from "./stopSketch";
 
 export type Editor = monaco.editor.IStandaloneCodeEditor;
 export interface GlobalContext {
@@ -22,6 +23,7 @@ export interface GlobalContext {
   consoleLogs: Log[];
   createConsoleLog: Action<GlobalContext, Log>;
   hookConsole: Thunk<GlobalContext, HTMLIFrameElement>;
+  stopSketch: Action<GlobalContext, Editor>;
 }
 
 export interface PartialFile {
@@ -45,4 +47,5 @@ export const globalContext = createStore<GlobalContext>({
   consoleLogs: [],
   createConsoleLog,
   hookConsole,
+  stopSketch,
 });
