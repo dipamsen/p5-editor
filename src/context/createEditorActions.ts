@@ -1,12 +1,20 @@
 import { thunk } from "easy-peasy";
 import * as monaco from "monaco-editor";
 import { Editor, GlobalContext } from "./GlobalContext";
+import { removeContextMenuGroup } from "../utils/removeContextMenuGroup";
 
 export const createEditorActions = thunk<GlobalContext, Editor>(
   (actions, editor) => {
+    // Remove the navigation group from the context menu (Go to Definition, etc.)
+    removeContextMenuGroup("navigation");
+
+    console.log(editor.getSupportedActions().map((x) => x.id));
+
     editor.addAction({
       id: "start-sketch",
       label: "Start Sketch",
+      contextMenuGroupId: "0_global",
+      contextMenuOrder: 1,
       keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
       run: actions.renderSketch,
     });
@@ -14,6 +22,8 @@ export const createEditorActions = thunk<GlobalContext, Editor>(
     editor.addAction({
       id: "stop-sketch",
       label: "Stop Sketch",
+      contextMenuGroupId: "0_global",
+      contextMenuOrder: 2,
       keybindings: [
         monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter,
       ],
@@ -27,26 +37,23 @@ export const createEditorActions = thunk<GlobalContext, Editor>(
       run: () => console.log("Saved Code"),
     });
 
-    editor.addAction({
-      id: "format-code",
-      label: "Format Code with Prettier",
-      keybindings: [
-        monaco.KeyMod.Shift | monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF,
-      ],
-      run() {
-        editor.getAction("editor.action.formatDocument")!.run();
+    // change keybindings for format document and command palette
+    monaco.editor.addKeybindingRules([
+      {
+        command: "editor.action.formatDocument",
+        keybinding:
+          monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyF,
       },
-    });
+      {
+        command: "editor.action.quickCommand",
+        keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK,
+      },
+    ]);
 
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK, () => {
-      editor.trigger("", "editor.action.quickCommand", "");
-    });
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyP, () => {
-      editor.trigger("", "editor.action.quickCommand", "");
-    });
-
+    // resize the editor when the window resizes
     window.onresize = () => editor.layout();
 
-    editor.trigger("", "vs.editor.ICodeEditor:1:start-sketch", "");
+    // run the sketch when the editor is ready
+    editor.trigger("editor", "start-sketch", {});
   }
 );
