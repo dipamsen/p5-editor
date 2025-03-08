@@ -1,5 +1,5 @@
 import "./Header.module.css";
-import logo from "../assets/p5-monaco.png";
+import logo from "../assets/p5-monaco.svg";
 import styles from "./Header.module.css";
 
 export default function Header() {
